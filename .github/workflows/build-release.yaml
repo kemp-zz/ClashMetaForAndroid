@@ -54,17 +54,17 @@ jobs:
         run: |
           sed -i "s/^versionCode .*/versionCode ${{ env.versionCode }}/" build.gradle.kts
           sed -i "s/^versionName .*/versionName \"${{ env.versionName }}\"/" build.gradle.kts
-
+        
       - name: Commit and push if changes
         run: |
-          changes=$(git diff --name-only origin/main | wc -l)
-          if [ $changes -gt 0 ]; then
+          changes=$(git diff --name-only)
+          if [ "$changes" ]; then
             git config --global user.name 'GitHub Action'
             git config --global user.email 'action@github.com'
             git add build.gradle.kts
             git commit -m "Bump version to ${{ env.versionName }} (${{ env.versionCode }})"
             git tag "v${{ env.versionName }}"
-            git push origin --tags
+            git push origin "v${{ env.versionName }}"
           fi
 
       - name: Setup Gradle
@@ -93,7 +93,4 @@ jobs:
       - name: Release Changelog Builder
         uses: mikepenz/release-changelog-builder-action@v4.1.1
         with:
-          configuration: |
-            {
-              "ignore_labels": ["Update"],
-            }
+          configuration: '{"ignore_labels": ["Update"]}'
