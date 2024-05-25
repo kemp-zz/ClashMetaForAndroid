@@ -52,8 +52,8 @@ jobs:
 
       - name: Re-write version in build.gradle.kts
         run: |
-          sed -i "s/^versionCode .*/versionCode \${{ env.versionCode }}/" build.gradle.kts
-          sed -i "s/^versionName .*/versionName \"\${{ env.versionName }}\"/" build.gradle.kts
+          sed -i "s/^versionCode .*/versionCode ${{ env.versionCode }}/" build.gradle.kts
+          sed -i "s/^versionName .*/versionName \"${{ env.versionName }}\"/" build.gradle.kts
 
       - name: Commit and push if changes
         run: |
