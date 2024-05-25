@@ -46,8 +46,9 @@ jobs:
           VERSION_TAG=${VERSION_TAG#v} # remove the 'v' prefix
           IFS='.' read -ra VERSION_PARTS <<< "$VERSION_TAG" # split into array
           VERSION_CODE=$(printf "%1d%02d%03d" "${VERSION_PARTS[0]}" "${VERSION_PARTS[1]}" "${VERSION_PARTS[2]}")
-          echo "versionName=$VERSION_TAG" >> $GITHUB_ENV
-          echo "versionCode=$VERSION_CODE" >> $GITHUB_ENV
+          sed -i "s/^versionCode .*/versionCode 201001/" build.gradle.kts
+          sed -i "s/^versionName .*/versionName \"2.1.1\"/" build.gradle.kts
+
 
       - name: Re-write version in build.gradle.kts
         run: |
